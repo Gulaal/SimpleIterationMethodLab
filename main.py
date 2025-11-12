@@ -18,9 +18,11 @@ def rearrangeMatrix(A, b):
                         newA[[i, j]] = newA[[j, i]]
                         newB[[i, j]] = newB[[j, i]]
                         break
+
     print('Система после преобразования')
     print(f"Новая матрица\n {newA}")
     print(f"Новый вектор {newB}")
+    
     return newA, newB
 
 def transformSystem(matrix, bVector):
@@ -40,20 +42,15 @@ def transformSystem(matrix, bVector):
     return (resultMatrix, resultVector)
 
 def main():
-    # Фиксированное количество итераций
-    MAX_ITERATIONS = 100
-    # Число для опеределения, когда нам нужно остановиться
-    EPSILON = 1e-6
-    # Инициализируем систему
+    MAX_ITERATIONS = 10000
+    EPSILON = 1e-7
     A = np.array([
-        [10, -1, 2, 0],
-        [-1, 11, -1, 3],
-        [2, -1, 0, -4],
-        [0, 3, -1, 8]
+        [3.5, 1, 2.1],
+        [1, 4, 2.5],
+        [2.1, 2.5, 4.7],
     ], dtype=float)
-    b = np.array([6, 25, -11, 15], dtype=float)
-    # Стартовый вектор x0
-    x = np.array([0,0,0,0], dtype=float)
+    b = np.array([0.56, 0.61, 0.96], dtype=float)
+    x = np.array([0,0,0], dtype=float)
     rearrangedSystem = rearrangeMatrix(A, b)
     A = rearrangedSystem[0]
     b = rearrangedSystem[1]
@@ -83,3 +80,11 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+    # A = np.array([
+    #     [3.5, 1, 2.1],
+    #     [1, 4, 2.5],
+    #     [2.1, 2.5, 4.7],
+    # ], dtype=float)
+    # b = np.array([0.56, 0.61, 0.96], dtype=float)
+    # print(np.linalg.solve(A, b))
