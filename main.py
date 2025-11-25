@@ -1,29 +1,25 @@
 import numpy as np
 
 def rearrangeMatrix(A, b):
-    size = A.shape[0]
+    n = A.shape[0]
     newA = A.copy()
     newB = b.copy()
-
-    for i in range(size):
-        if newA[i, i] == 0:
-            for j in range(i + 1, size):
-                if newA[j, i] != 0:
-                    newA[[i, j]] = newA[[j, i]]
-                    newB[[i, j]] = newB[[j, i]]
-                    break
-            else:
-                for j in range(i + 1, size):
-                    if np.any(newA[j] != 0):
-                        newA[[i, j]] = newA[[j, i]]
-                        newB[[i, j]] = newB[[j, i]]
-                        break
+    
+    for i in range(n):
+        max_row = i
+        for j in range(i, n):
+            if abs(newA[j, i]) > abs(newA[max_row, i]):
+                max_row = j
+        if max_row != i:
+            newA[[i, max_row]] = newA[[max_row, i]]
+            newB[[i, max_row]] = newB[[max_row, i]]
 
     print('Система после преобразования')
     print(f"Новая матрица\n {newA}")
     print(f"Новый вектор {newB}")
-    
+
     return newA, newB
+
 
 def transformSystem(matrix, bVector):
     matrixShape = matrix.shape
@@ -59,11 +55,15 @@ def main():
         if abs(A[i, i]) <= np.sum(abs(A[i])) - abs(A[i, i]):
             print("Предупреждение: Отсутствует диагональное преобладание.")
             break
-    
+
     try:
         transformedSystem = transformSystem(A, b)
         T = transformedSystem[0]
         c = transformedSystem[1]
+
+        if np.max(np.sum(np.abs(T), axis=1)) >= 1:
+            print("Сходимость не гарантирована") 
+
     except ValueError as e:
         print(e)
         return
