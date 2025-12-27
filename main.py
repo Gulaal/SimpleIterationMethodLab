@@ -38,15 +38,25 @@ def transformSystem(matrix, bVector):
     return (resultMatrix, resultVector)
 
 def main():
-    MAX_ITERATIONS = 10000
-    EPSILON = 1e-7
+    MAX_ITERATIONS = 1000
+    EPSILON = 1e-4
+    # A1 = np.array([
+    #     [3.5, 1, 2.1],
+    #     [1, 4, 2.5],
+    #     [2.1, 2.5, 4.7],
+    # ], dtype=float)
+    # b2 = np.array([0.56, 0.61, 0.96], dtype=float)
+
     A = np.array([
-        [3.5, 1, 2.1],
-        [1, 4, 2.5],
-        [2.1, 2.5, 4.7],
+        [-0.68, -0.18, 0.02, 0.21],
+        [0.16, -0.88, -0.14, 0.27],
+        [0.37, 0.27, -1.02, -0.23],
+        [0.12, 0.21, -0.18, -0.75]
     ], dtype=float)
-    b = np.array([0.56, 0.61, 0.96], dtype=float)
-    x = np.array([0,0,0], dtype=float)
+    b = np.array([-1.83, 0.65, -2.23, 1.13], dtype=float)
+
+    x = np.array([0,0,0,0], dtype=float)
+
     rearrangedSystem = rearrangeMatrix(A, b)
     A = rearrangedSystem[0]
     b = rearrangedSystem[1]
@@ -70,12 +80,16 @@ def main():
     
     for k in range(0, MAX_ITERATIONS):
         print(f"Номер итерации: {k+1}")
-        x_new = np.dot(T, x) + c    
+        x_new = np.dot(T, x) + c
+
         if np.linalg.norm(x_new - x) < EPSILON:
+            print(np.dot(A, x_new)-b)
             print (f"Ответ: {x_new}")
             return
         else:
             x = x_new
+            r = np.dot(A, x) - b
+            print(r)
             print(x)
 
 if __name__ == '__main__':
